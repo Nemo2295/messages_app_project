@@ -1,0 +1,14 @@
+DEFAULT:
+  FASTAPI:
+    title: Nemo messaging app
+    description: This project is a part of my training as a back-end software developer.
+    version: 0.0.1
+    contact:
+      name: nimrod segev
+      email: nimrodsegev10@gmail.com
+
+  REQUESTS_BODY_MODEL:
+    max_message_length: 300
+
+  SENDING_SCHEDULED_MESSAGES:
+    seconds: 7
