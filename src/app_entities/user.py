@@ -8,5 +8,5 @@ class AppUser:
     first_name: str
     last_name: str
     middle_name: str
-    date_of_registration: str = field(default_factory=custom_format_of_current_datetime)
+    registration_date: str = field(default_factory=custom_format_of_current_datetime)
     user_id: str = field(default_factory=generate_id)

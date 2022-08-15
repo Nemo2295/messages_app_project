@@ -12,3 +12,5 @@ DEFAULT:
 
   SENDING_SCHEDULED_MESSAGES:
     seconds: 7
+
+

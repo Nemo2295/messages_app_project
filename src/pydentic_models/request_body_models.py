@@ -30,3 +30,7 @@ class ScheduledMessageBodyModel(BaseModel):
 
 class ScheduledMessagesToDelete(BaseModel):
     messages_ids: List[str] = Field(example=[generate_id() for i in range(2)])
+
+
+class UsersId(BaseModel):
+    users_id: List[str] = Field(example=[generate_id() for i in range(2)])
