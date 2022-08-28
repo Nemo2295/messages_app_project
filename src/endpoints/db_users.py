@@ -90,7 +90,7 @@ async def retrieve_user(user_id: str):
             "user_id": user_id}
 
 
-@db_users_router.get("/all/", status_code=200)
+@db_users_router.get("/all", status_code=200)
 async def retrieve_all_users():
     try:
         db_connection = psycopg2.connect(connection_string)
@@ -115,3 +115,21 @@ async def retrieve_all_users():
             "status_code": 200,
             "user_id": "DB is empty - no users"}
 
+
+@db_users_router.delete("/multiple", status_code=200)
+async def delete_multiple_users_by_id(users_ids: UsersId):
+    try:
+        db_connection = psycopg2.connect(connection_string)
+        my_cursor = db_connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        query = f"DELETE FROM app_users.users u WHERE u.id IN {tuple(set(users_ids.users_id))}"
+        my_cursor.execute(query)
+        db_connection.commit()
+        my_cursor.close()
+        db_connection.close()
+        return {"message": "deleted requested users",
+                "users_id": users_ids.users_id}
+    except Exception as e:
+        print(e)
+    return {"message": f"Users was not found in DB",
+            "status_code": 200,
+            "user_id": "DB is empty - no users"}
