@@ -45,3 +45,37 @@ async def create_user(user_id: str):
             "status_code": 404,
             "user_id": user_id}
 """
+
+"""
+import requests
+import json
+
+url = "http://127.0.0.1:8000/db_users"
+
+payload = json.dumps({
+  "display_name": "shwazi",
+  "first_name": "shiraz",
+  "last_name": "benhaim",
+  "middle_name": "aliza"
+})
+headers = {
+  'Content-Type': 'application/json'
+}
+
+response = requests.request("POST", url, headers=headers, data=payload)
+
+print(response.text)
+"""
+
+"""
+import requests
+
+url = "http://127.0.0.1:8000/db_users/all"
+
+payload={}
+headers = {}
+
+response = requests.request("GET", url, headers=headers, data=payload)
+
+print(response.text)
+"""

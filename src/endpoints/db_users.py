@@ -24,7 +24,7 @@ async def create_user(user: UserBodyModel):
                 f" '{new_user.display_name}'," \
                 f" '{new_user.first_name}'," \
                 f" '{new_user.last_name}'," \
-                f" {new_user.middle_name}," \
+                f" '{new_user.middle_name}'," \
                 f" '{new_user.registration_date}')"
         my_cursor.execute(query)
         db_connection.commit()
@@ -32,7 +32,8 @@ async def create_user(user: UserBodyModel):
         db_connection.close()
     except Exception as error:
         print(error)
-    return {"message": f"User {new_user.user_id} registration was successful"}
+        return {"message": "User registration was not successful", "user_id": f"{new_user.user_id}"}
+    return {"message": "User registration was successful", "user_id": f"{new_user.user_id}"}
 
 
 @db_users_router.put("/", status_code=201)
