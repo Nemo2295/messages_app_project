@@ -71,24 +71,25 @@ async def delete_user(user_id: str):
 @db_users_router.get("/", status_code=200)
 async def retrieve_user(user_id: str):
     try:
-        db_connection = psycopg2.connect(connection_string)
-        my_cursor = db_connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        query = f"SELECT * FROM app_users.users u WHERE u.id = '{user_id}'"
-        my_cursor.execute(query)
-        user_in_db = my_cursor.fetchone()
-        db_connection.close()
-        user_in_db = AppUser(user_in_db["display_name"],
-                             user_in_db["first_name"],
-                             user_in_db["last_name"],
-                             user_in_db["middle_name"],
-                             user_in_db["registration_date"].strftime("%d/%m/%Y %H:%M:%S"),
-                             user_in_db["id"])
-        return {"message": user_in_db}
+        with psycopg2.connect(connection_string) as db_connection:
+            with db_connection.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+                query = f"SELECT * FROM app_users.users u WHERE u.id = '{user_id}'"
+                cursor.execute(query)
+                user_in_db = cursor.fetchone()
+                db_connection.close()
+                if user_in_db:
+                    user_in_db = AppUser(user_in_db["display_name"],
+                                         user_in_db["first_name"],
+                                         user_in_db["last_name"],
+                                         user_in_db["middle_name"],
+                                         user_in_db["registration_date"].strftime("%d/%m/%Y %H:%M:%S"),
+                                         user_in_db["id"])
+                    return {"message": user_in_db}
+                return {"message": f"User was not found in DB",
+                        "status_code": 404,
+                        "user_id": user_id}
     except Exception as e:
         print(e)
-    return {"message": f"User was not found in DB",
-            "status_code": 404,
-            "user_id": user_id}
 
 
 @db_users_router.get("/all", status_code=200)
